@@ -43,7 +43,7 @@ Inherited from [DataElementBehaviors.Basic](behaviors-basic.md):
  - `name: String`
  - `valid: Boolean`
 
- Inherited from [DataElementBehaviors.TextField](behaviors-text-feild.md);
+ Inherited from [DataElementBehaviors.TextField](behaviors-text-field.md);
 
  - `pristine: Boolean`
  - `touched: Boolean` 
@@ -52,7 +52,7 @@ Inherited from [DataElementBehaviors.Basic](behaviors-basic.md):
 
 ## Methods
 
-Inherited from [DataElementBehaviors.TextField](behaviors-text-feild.md);
+Inherited from [DataElementBehaviors.TextField](behaviors-text-field.md);
 
 - `validate(): Boolean` (*override*)
 
@@ -70,4 +70,4 @@ Inherited from [DataElementBehaviors.Basic](behaviors-basic.md):
 ## Behaviors
 
 - [DataElementBehaviors.Basic](behaviors-basic.md)
-- [DataElementBehaviors.OptionList](behaviors-text-field.md)
+- [DataElementBehaviors.OptionList](behaviors-option-list.md)

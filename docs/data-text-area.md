@@ -71,6 +71,6 @@ Inherited from [DataElementBehaviors.Basic](behaviors-basic.md):
 ## Behaviors
 
 - [DataElementBehaviors.Basic](behaviors-basic.md)
-- [DataElementBehaviors.OptionList](behaviors-text-field.md)
+- [DataElementBehaviors.OptionList](behaviors-option-list.md)
 
 
