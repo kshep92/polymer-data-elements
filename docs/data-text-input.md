@@ -1,3 +1,5 @@
+[<- Back to Table of Contents](../README.md)
+
 # data-text-input
 
 Bind a String value from a JSON object to an HTML `<input type="text" />` tag.

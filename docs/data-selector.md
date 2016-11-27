@@ -1,3 +1,5 @@
+[<- Back to Table of Contents](../README.md)
+
 # data-selector
 
 This isn't really a control, but rather a utility tag for ticking the

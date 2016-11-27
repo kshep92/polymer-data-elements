@@ -1,3 +1,5 @@
+[<- Back to Table of Contents](../README.md)
+
 # data-select
 
 Bind an array of JSON objects to an HTML `<select>` tag.

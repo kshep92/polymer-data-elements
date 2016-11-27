@@ -1,3 +1,5 @@
+[<- Back to Table of Contents](../README.md)
+
 # DataElementBehaviors.OptionList
 
 Properties shared by `data-selector` and `simple-data-selector`

@@ -1,3 +1,5 @@
+[<- Back to Table of Contents](../README.md)
+
 # DataElementBehaviors.TextField
 
 Properties, methods and events shared by the `data-text-input`

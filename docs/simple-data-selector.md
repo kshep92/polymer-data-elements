@@ -1,3 +1,5 @@
+[<- Back to Table of Contents](../README.md)
+
 # simple-data-selector
 
 A counterpart to the `data-selector` for handling simple data types (Strings). It uses the same `data-selector` API,

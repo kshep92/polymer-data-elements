@@ -1,3 +1,5 @@
+[<- Back to Table of Contents](../README.md)
+
 # data-text-area
 
 Aside from the tag name, `data-text-area` is almost identical
