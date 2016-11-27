@@ -1,0 +1,69 @@
+<link rel="import" href="data-element-behaviors.html">
+<dom-module id="data-selector">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <content></content>
+    </template>
+    <script>
+        Polymer({
+            is: 'data-selector',
+            behaviors: [
+                DataElementBehaviors.Basic,
+                DataElementBehaviors.OptionList,
+                DataElementBehaviors.DataSelector,
+            ],
+            ready: function() {
+                if(this.selectedItem == {} && !this.multiple) 
+                    this.selectedItem = this.items[0];
+            },
+            _configureSelections: function() {
+                var value; 
+                if(this.multiple) {
+                    if(this.selectedItems.length > 0) {
+                        this.selectedItems.forEach(function(item) {
+                            value = item[this.valueField];
+                            this._tick(value);                            
+                        }.bind(this));
+                    }
+                }
+                else {
+                    value = this.selectedItem[this.valueField];
+                    this._tick(value);
+                }
+            },
+            _indexOf: function(value) {
+                var index = -1;
+                for(var i = 0; i<this.selectedItems.length; i++) {
+                    if(this.selectedItems[i][this.valueField] == value) {
+                        index = i;
+                        break;
+                    }
+                }
+                return index;
+            },
+            _onChange: function(evt) {
+                var value = evt.target.value;
+                var id = this.valueField;
+                var option = {};
+                if(this.multiple) {
+                    option[id] = value;
+                    var index = this._indexOf(value);
+                    if(index > -1) this.splice('selectedItems', index, 1);
+                    else this.push('selectedItems', option);
+                }
+                else {
+                    var newVal = this.items.filter(function(_option) {
+                        return _option == value;
+                    })[0];
+                    option[id] = newVal;
+                    this.selectedItem = option;
+                }
+                this.validate();
+            }
+        });
+    </script>
+</dom-module>

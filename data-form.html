@@ -1,0 +1,58 @@
+
+<dom-module id="data-form">
+    <script>
+        Polymer({
+            is: 'data-form',
+            extends: 'form',
+            hostAttributes: {
+                'novalidate': true
+            },
+            properties: {
+                reference: { //The object we can bind to in templates.
+                    type: Object,
+                    readOnly: true,
+                    notify: true,
+                    value: function() { return { valid: true }; }
+                }
+            },
+            listeners: {
+                'data-elmement-added': '_onChildAdded',
+                'validation': '_onValidation'
+            },
+            attached: function() {
+                this.addEventListener('submit', this._onSubmit.bind(this));
+            },
+            validate: function() {
+                var result = true;
+                for(var field in this.reference) {
+                    var elm = this.reference[field].$elm;
+                    if(elm && !elm.validate()) { 
+                        result = false; 
+                        break;
+                    }
+                }
+                return result;
+            },
+            _onChildAdded: function(event) {
+                var detail = event.detail;
+                this.set(['reference', detail.field], {
+                    valid: detail.valid,
+                    $elm: detail.$elm
+                });
+            },
+            _onSubmit: function(event) {
+                event.preventDefault();
+                if(this.validate()) {
+                    this.removeEventListener('submit', this._onSubmit);
+                    this.submit();
+                    console.log('All good, chief!');
+                }
+            },
+            _onValidation: function(event) {
+                var detail = event.detail;
+                this.set(['reference', detail.field, 'valid'], detail.valid);
+                this.set(['reference', detail.field, 'error'], detail.error);
+            },
+        });
+    </script>
+</dom-module>

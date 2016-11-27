@@ -1,0 +1,143 @@
+<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="import" href="../bower_components/polymer/polymer.html" />
+<link rel="import" href="../data-elements.html">
+<script src="sample-data.js"></script>
+
+<dom-module id="signup-form">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            .field {
+                margin-bottom: 8px;
+            }
+
+            .field__label {
+                font-weight: bold;
+                display: block;
+                margin-bottom: 4px;
+            }
+
+            input.field__input {
+                display: inline-block;
+                padding: 4px;
+            }
+            .iron-selected { color: red;  }
+
+        </style>
+        <h2>Sign Up</h2>
+        <h3>Personal Information</h3>
+        <!-- Getting a reference to the form object -->
+        <form is="data-form" reference="{{form}}"> 
+            <div class="field">
+            <label class="field__label">Full name</label>
+            <input 
+                type="text"
+                is="data-text-input" 
+                name="fullName" 
+                model="{{user.name}}" 
+                class="field__input"
+                required>
+            <!-- Used for showing and hiding error messages related to the user.fullName property. -->
+            <p class="field__error" hidden$="[[form.fullName.valid]]">[[form.fullName.error]]</p>
+            </div>
+            <div class="field">
+                <label class="field__label">Email address</label>
+                <input 
+                    type="email"
+                    is="data-text-input" 
+                    name="email" 
+                    model="{{user.email}}" 
+                    class="field__input"
+                    required>
+                <p class="field__error">[[form.email.error]]</p>
+            </div>
+            <div class="field">
+                <p class="field__label" role="label">Gender</p>
+                <p class="field__error" hidden$="form.gender.valid">[[form.gender.error]]</p>
+                <data-selector name="gender" selected-item="{{user.gender}}" id="selGender">
+                    <template is="dom-repeat" items="[[genders]]">
+                        <input type="radio" name="gender" value="[[item.id]]" id="radio-[[item.id]]"> <label for$="radio-[[item.id]]">[[item.label]]</label>
+                    </template>
+                </data-selector>
+            </div>
+            <div class="field">
+                <p class="field__label">Package</p>
+                <select 
+                    name="package" 
+                    id="cboPackage" 
+                    is="data-select" 
+                    items="[[packages]]"
+                    placeholder="--Choose--"
+                    selected-item="{{user.package}}"
+                    required></select>
+                <p class="field__error" hidden$="form.package.valid">[[form.package.error]]</p>
+            </div>
+            <div class="field">
+                <p class="field__label" role="label">Additional services</p>
+                <p class="field__error" hidden$="form.services.valid">[[form.services.error]]</p>
+                <data-selector id="services" name="services" multiple selected-items="{{user.services}}" required>
+                    <template is="dom-repeat" items="[[services]]">
+                        <p>
+                            <input type="checkbox" value="[[item.id]]" id="checkbox-[[item.id]]"> 
+                            <label for$="checkbox-[[item.id]]">[[item.label]]</label>
+                        </p>
+                    </template>
+                </data-selector>
+            </div>
+            <div class="field">
+                <p class="field__label">Notes</p>
+                <textarea 
+                    name="notes" 
+                    cols="30" 
+                    rows="5" 
+                    is="data-text-area" 
+                    model="{{user.notes}}"></textarea>
+                <p class="field__error">[[form.notes.error]]</p>
+            </div>
+            <div class="field">
+                <input type="checkbox" is="data-checkbox" model="{{user.agree}}" id="cbAgree"> 
+                <label for="cbAgree">I agree to the bogus <a href="#">Terms of service</a>.</label>
+            </div>
+            <input type="submit" value="Save" id="btnSubmit">            
+            <div>[[stringify(user.*)]]</div>
+        </form>
+        
+    </template>
+    <script>
+        Polymer({
+            is: 'signup-form',
+            properties: {
+                user: {
+                    value: user
+                },
+                genders: {
+                    type: Array,
+                    value: genders
+                },
+                services: {
+                    type: Array,
+                    value: services
+                },
+                packages: {
+                    type: Array,
+                    value: packages
+                },
+                permissions: {
+                    type: Array,
+                    value: permissions
+                }
+            },
+            attached: function() {
+                // Adding a custom validator to a form control.
+                this.$.services.addValidator(function(elm) {
+                    return elm.selectedItems.length > 3; // Throws an error if you select more than 3 items.
+                }, 'Hey, not so many!');
+            },
+            stringify: function() {
+                return JSON.stringify(this.user);
+            }
+        });
+    </script>
+</dom-module>

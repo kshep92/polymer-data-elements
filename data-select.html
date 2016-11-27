@@ -1,0 +1,59 @@
+<link rel="import" href="data-element-behaviors.html">
+
+<dom-module id="data-select">
+    <script>
+        Polymer({
+            is: 'data-select',
+            extends: 'select',
+            properties: {
+                placeholder: String
+            },
+            behaviors: [
+                DataElementBehaviors.Basic,
+                DataElementBehaviors.OptionList
+            ],
+            ready: function() {
+                label = this.labelField;
+                _id = this.valueField;
+                if(this.placeholder) {
+                    var item = {};
+                    item[_id] = "";
+                    item[label] = this.placeholder;
+                    this.items.unshift(item);
+                }
+                this.selectedItem = this.selectedItem || this.items[0];
+            },
+
+            get label() { return this.labelField; },
+            set label(val) { this.label = val; },
+            get _id() { return this.valueField; },
+            set _id(val) { this._id = val; },
+
+            attached: function() {
+                this.items.forEach(function(item) {
+                    var $option = document.createElement('option');
+                    $option.innerHTML = item[label];
+                    $option.value = item[_id];
+                    if(this.selectedItem[_id] == item[_id]) $option.selected = true;
+                    this.appendChild($option);
+                }.bind(this));
+            },
+
+            validate: function() {
+                if(this.required && this.value == '') {
+                    this.setValidity(false, 'Please select an option.');
+                    return false;
+                } else if(this.validity.valid) this._doAdditionalValidations();
+                return this.valid;
+            },            
+
+            _onChange: function(evt) {
+                var newVal = {};
+                console.log(this.value);
+                newVal[_id] = this.value;
+                this.selectedItem = newVal;
+                this.validate();
+            }
+        });
+    </script>
+</dom-module>

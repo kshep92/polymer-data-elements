@@ -1,0 +1,21 @@
+{
+  "name": "data-elements",
+  "authors": [
+    "Kevin Sheppard <kevin@reviselabs.com>"
+  ],
+  "description": "A convenience library for handling JSON backed forms with Polymer.",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "polymer/polymer#^1.7.0"
+  }
+}

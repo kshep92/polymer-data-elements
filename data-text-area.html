@@ -1,0 +1,14 @@
+<link rel="import" href="data-element-behaviors.html">
+
+<dom-module id="data-text-area">
+    <script>
+        Polymer({
+            is: 'data-text-area',
+            extends: 'textarea',
+            behaviors: [
+                DataElementBehaviors.Basic,
+                DataElementBehaviors.TextField
+            ]
+        });
+    </script>
+</dom-module>

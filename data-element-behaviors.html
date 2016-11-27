@@ -1,0 +1,159 @@
+<script>
+    var DataElementBehaviors = DataElementBehaviors || {
+        Basic: {
+            properties: {
+                _validators: {
+                    type: Array,
+                    value: function() {
+                        return [];
+                    }
+                },
+                model: String,
+                valid: {
+                    type: Boolean,
+                    value: true,
+                    notify: true
+                },
+                error: String,
+                name: String
+            },
+            addValidator: function(validatorFn, validationMessage) {
+                this._validators.unshift({fail: validatorFn, message: validationMessage});
+            },
+            on: function(eventName, handerFunction) {
+                this.addEventListener(eventName, handerFunction);
+            },
+            attached: function() {
+                this.fire('data-elmement-added', {
+                    field: this.name,
+                    valid: this.valid,
+                    $elm: this
+                });
+            },
+            validate: function() {
+                /* Method stub */            
+                console.log('validate() method not implemented.');
+                return this.valid;
+            },             
+            _doAdditionalValidations: function() {
+                if(this._validators.length > 0) {
+                    this._validators.some(function(validator) {
+                        if(validator.fail(this)) {
+                            this.setValidity(false, validator.message || 'This field is invalid.');
+                            return true; //Breaks out of the loop, not the return value of the function.
+                        } else {
+                            if(!this.valid) this.setValidity(true);
+                        }
+                    }.bind(this));
+                }
+                else this.setValidity(true);                
+                return this.valid;
+            },
+            _onChange: function(event) {
+                /* Method stub */     
+                console.log('_onChange() method not implemented.');                
+            },
+            setValidity: function(isValid, message) {
+                this.valid = isValid;
+                this.error = message;
+                this.fire('validation', {
+                    field: this.name, 
+                    valid: isValid, 
+                    error: message
+                });
+            }
+        },
+
+        TextField: {
+            properties: {
+                pristine: { type: Boolean, value: true },
+                touched: { type: Boolean, value: false },
+                model: { type: String, notify: true }
+            },
+            listeners: {
+                'input': '_onInput',
+                'blur': '_onBlur'
+            },
+            ready: function() {
+                this.value = this.model;
+            },
+            validate: function() {
+                if(!this.touched) this.touched = true;
+                if(this.validity.valid) this._doAdditionalValidations();
+                else this.setValidity(false, this.validationMessage);
+                return this.valid;
+            },
+            _onInput: function(event) {
+                this.model = this.value;
+                if(this.touched && !this.pristine) this.validate();
+                this.pristine = false;
+            },            
+            _onBlur: function() {
+                if(!this.touched) {
+                    this.validate(); 
+                    this.touched = true; 
+                }
+            }
+        },
+
+        OptionList: {
+            listeners: { 'change': '_onChange' },
+            properties: {
+                labelField: {
+                    type: String,
+                    value: 'label'
+                },
+                multiple: {
+                    type: Boolean,
+                    default: false
+                },
+                selectedItem: {
+                    type: Object,
+                    notify: true,
+                    value: function() { return {}; }
+                },
+                selectedItems: {
+                    type: Array,
+                    notify: true,
+                    value: function() { return []; }
+                },
+                items: {
+                    type: Array,
+                    value: function() { return []; }
+                },
+                required: {
+                    type: Boolean,
+                    value: false
+                },
+                valueField: {
+                    type: String,
+                    value: 'id'
+                }
+            }
+        },
+
+        DataSelector: {             
+            attached: function() {
+                this._inputs = document.querySelectorAll(this.tagName.toLowerCase() + '[name='+this.name+'] input');
+                for(var i = 0; i<this._inputs.length; i++) { //using NodeList.forEach would be great, but, you know, IE :/
+                    this.push('items', this._inputs[i].value);
+                }               
+                this._configureSelections(); 
+            },           
+            validate: function() {
+                if(this.required && this.multiple && this.selectedItems.length == 0) {
+                    this.setValidity(false, 'You must choose at least one item.');
+                    return false;
+                }
+                return this._doAdditionalValidations();
+            },
+             _tick: function(value) { //Utility function to tick boxes or check radio buttons.
+                for(var i = 0; i<this._inputs.length; i++) {
+                    var node = this._inputs[i];
+                    if(node.value == value) 
+                        node.setAttribute('checked', true);
+                }
+            }
+        }
+    }
+</script>

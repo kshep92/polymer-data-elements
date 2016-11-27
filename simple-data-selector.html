@@ -1,0 +1,50 @@
+
+<dom-module id="simple-data-selector">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <content></content>
+    </template>
+    <script>
+        Polymer({
+            is: 'simple-data-selector',
+            properties: {
+                selectedItem: String,
+            },
+            behaviors: [
+                DataElementBehaviors.Basic,
+                DataElementBehaviors.OptionList,
+                DataElementBehaviors.DataSelector,
+            ],
+            ready: function() {
+                this.selectedItem = this.selectedItem || this.items[0];
+            },
+            _configureSelections: function() {
+                if(this.multiple) {
+                    if(this.selectedItems.length > 0) {
+                        this.selectedItems.forEach(function(item) {
+                            this._tick(item);                            
+                        }.bind(this));
+                    }
+                }
+                else this._tick(this.selectedItem);
+            },
+            _onChange: function(evt) {
+                var value = evt.target.value;
+                if(this.multiple) {
+                    var index = this.selectedItems.indexOf(value);
+                    if(index > -1) this.splice('selectedItems', index, 1);
+                    else this.push('selectedItems', value);
+                } else {
+                    this.selectedItem = value;
+                }
+                this.validate();
+            }
+
+
+        });
+    </script>
+</dom-module>

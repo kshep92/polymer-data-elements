@@ -1,0 +1,28 @@
+<link rel="import" href="data-element-behaviors.html">
+
+<dom-module id="data-checkbox">
+    <script>
+        Polymer({
+            is: 'data-checkbox',
+            extends: 'input',
+            behaviors: [
+                DataElementBehaviors.Basic
+            ],
+            listeners: {
+                'change': '_onChange'
+            },
+            properties: {
+                model: {
+                    type: Boolean,
+                    notify: true
+                }
+            },
+            attached: function() {
+                if(this.model == true) this.setAttribute('checked', true);
+            },
+            _onChange: function(evt) {
+                this.model = evt.target.checked;
+            }
+        });
+    </script>
+</dom-module>
