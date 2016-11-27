@@ -14,7 +14,7 @@ validation a less tedious, frustrating and annoying task.
 - [data-selector](docs/data-selector.md)
 - [data-select](docs/data-select.md)
 - [data-text-area](docs/data-text-area.md)
-- [data-text-input](docs/text-input.md)
+- [data-text-input](docs/data-text-input.md)
 - [simple-data-selector](docs/simple-data-selector.md)
 
 **Behaviours**
